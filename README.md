@@ -1,8 +1,12 @@
 # knappstack
 
-*The agentic-engineering stack I bring to every build — an opinionated operating system for shipping production software with AI coding agents, not demos.*
+*The agentic-engineering stack I use every day: An operating system for shipping production software with AI coding agents, not demos.*
 
-> Principles, a development lifecycle, review + release discipline, and durable planning — the methodology I actually use, generalized for any team or solo builder. **New here? → [SETUP.md](SETUP.md).**
+> Principles, a development lifecycle, review + release discipline, and durable planning — the methodology I actually use, generalized for any team or solo builder.
+>
+> Based on pricipals gleaned from others' best practices (See [CREDITS.md](CREDITS.md)).
+>
+> **New here? → [SETUP.md](SETUP.md).**
 
 > **Status: v0.1** — extracted and generalized from a private working set, sanitized for public use. Issues and PRs welcome.
 
