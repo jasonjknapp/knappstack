@@ -1,8 +1,12 @@
+---
+description: Universal engineering decision-making framework — consult before any task.
+---
+
 # Engineering Principles
 
 A universal decision-making framework for building software with AI coding agents. Consult it before starting any task. The rules are deliberately terse and imperative — they're written to be loaded as an agent's standing instructions, not read as an essay.
 
-Principles §1–§10 are general engineering discipline that AI agents make *more* necessary, not less. §11–§14 are agent-specific. Sources are credited in [CREDITS.md](../CREDITS.md).
+Principles §1–§11 are general engineering discipline that AI agents make *more* necessary, not less. §12–§16 are agent-specific. Sources are credited in [CREDITS.md](../CREDITS.md).
 
 ---
 
@@ -53,6 +57,7 @@ If you need a key, credential, admin grant, or resource to do it properly:
 - **When a bug is found, fix it, then re-run all relevant cases** — not just the one that failed.
 - **The case list only grows.** Every new failure mode becomes a permanent case.
 - **If the human has to ask "did you check edge cases?" — you failed.** Pre-empt it: list what you tested.
+- **Browser-based testing is mandatory for any web-facing feature.** If test pages exist, use them; don't rely on `curl` alone.
 
 ## §7. Anti-Deferral — Build It Right the First Time
 
@@ -83,25 +88,33 @@ When creating a file that shares structure with existing ones (components, confi
 4. **Cross-reference after creating.** Diff the new file's shared parts against the exemplar; any unexplained difference is a bug.
 5. **Stdlib over hand-rolled.** Prefer `JSON.stringify()` / `encodeURIComponent()` over manual escaping. If a standard function exists, use it.
 
+## §11. Write Safety on Synced Config Dirs — Avoid File-Lock Hangs
+
+If your agent's config or workflow files live on a cloud-synced drive (iCloud Drive, Dropbox, OneDrive, or similar), background sync can hold file locks that make native file-write tools hang indefinitely.
+
+1. **For files under a synced path:** prefer a shell write (`cat > file << 'EOF'`, or an in-place `sed`) over the native file-write tool.
+2. **Native file-write tools are fine** for non-synced paths (workspace repos, `/tmp/`, build artifacts).
+3. **Know which paths are synced.** If a path resolves through a known sync root, treat it as lock-prone and route writes through the shell.
+
 ---
 
-## §11. Treat Permissions as Architecture
+## §12. Treat Permissions as Architecture
 
 *(concept credit: Kris Skrinak's Simple-AI-DLC)*
 
 - **Classify every tool the agent can reach by how much it can break** — reads that change nothing, writes that change state, and actions you can't take back.
-- **Anything irreversible stops and waits for a human "yes"** — enforced in the harness (hooks, allowlists), not left to the agent's judgment.
+- **Anything irreversible stops and waits for a human "yes"** — enforced in the harness (hooks, allowlists), not left to the agent's judgment. (Hard-denying `rm`/`rm -rf` at the harness level is the pattern, not the exception.)
 - **A permission decision is a logged event you can review later**, not a prompt that flashes by and disappears.
 
-## §12. Agents Crash — Plan for It
+## §13. Agents Crash — Plan for It
 
 *(concept credit: Kris Skrinak's Simple-AI-DLC)*
 
 - **Checkpoint continuously.** What you need to resume isn't the transcript — it's where the work stands, what's already taken effect, and what budget remains.
 - **Separate "what we discussed" from "where the work is."** The first is a conversation log; the second answers "which step, what side effects already happened, is re-running this safe?"
-- **The recoverable copy of that state lives in files / version control, never only in the agent's working memory** — so a fresh session on any machine picks up cleanly.
+- **The recoverable copy of that state lives in files / version control, never only in the agent's working memory** — so a fresh session on any machine picks up cleanly. The recovery test: if this session died now, could a fresh one be correct from `next_action` alone?
 
-## §13. Verify the Work — and the Tooling That Produced It
+## §14. Verify the Work — and the Tooling That Produced It
 
 *(concept credit: Kris Skrinak's Simple-AI-DLC)*
 
@@ -110,7 +123,7 @@ Two checks, both required:
 1. **Is the task itself correct?** (That's §6.)
 2. **Did changing your own tooling — a new command, hook, setting, or automation — quietly disable a guardrail?** After you touch the harness, re-prove the guardrails still fire. Tooling you haven't re-verified corrupts everything built on top of it, silently.
 
-## §14. Rules Decay — Anchor Them to Intent, Not Specifics
+## §15. Rules Decay — Anchor Them to Intent, Not Specifics
 
 *(concept credit: Kris Skrinak's ContextEng)*
 
@@ -120,3 +133,15 @@ The rule that bites you is the one that was right when written and quietly forbi
 - **State the rule as the *reason* behind it, not the mechanism** — the outcome you're protecting, not which construct happens to be forbidden today.
 - **When the ground shifts, rewrite the rule to its intent up front** — before it blocks live work, not after someone hits the wall.
 - **Re-read your standing rules on a cadence:** sort the durable principles from the expired specifics, and rewrite or retire the latter.
+
+## §16. Context Is a Budget — Stay DRY
+
+*(concept credit: Anthropic's Claude Code context-management research)*
+
+Agent quality degrades two ways: **context rot** (critical detail buried as the window fills) and **catastrophic forgetting** (polluted context breeds contradictions). Every always-loaded token competes with the task, and **duplication causes drift** — the same rule in three files becomes three rules that diverge.
+
+- **One canonical home per concept; reference, don't restate.** A copy-pasted paragraph is a bug. A shared procedure lives in one referenced file; other files link to it.
+- **Compose, don't inline.** A shared procedure lives in one referenced file, not a copy in every workflow.
+- **Tier by load-frequency.** Keep always-loaded instructions (your project constitution, this file) minimal; push sometimes-needed detail to `docs/` and load it on demand.
+- **Clear and reload** at ~80% context, between phases, before hard problems — from the source of truth (constitution + plan + task state), not from the polluted window.
+- **Isolate fan-out.** Delegate search and investigation to subagents so their reads don't pollute the main context.

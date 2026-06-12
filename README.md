@@ -14,18 +14,58 @@
 
 A **product/engineering team** standing up an AI-first delivery practice, or an **independent consultant** running that practice across clients. The principles and planning conventions apply to delivery work in general; the lifecycle and release sections are code-specific.
 
-## What's inside
+## What's inside — the command map
 
-| Area | Path | What it gives you |
+The doctrine essays describe the *shape* of each gate; the command files are the *runbooks*. Each command has one canonical home, and the concept essays reference those homes instead of restating them. Layout:
+
+- **`workflows/`** — `/`-style command runbooks (the long-form executable workflows).
+- **`skills/`** — model-invoked skills, one directory per skill with a `SKILL.md`.
+- **`concepts/`** — the *why*/overview essays that tie the commands together.
+- **`templates/`** — copy-ready `CLAUDE.md`, `PLAN.md`, and `QA_CASES.md` starters.
+
+### Commands
+
+| Command | Surface | One-line purpose |
 |---|---|---|
-| **Principles** | [`principles/ENGINEERING-PRINCIPLES.md`](principles/ENGINEERING-PRINCIPLES.md) | The decision framework — consult before any task. |
-| **Lifecycle** | [`lifecycle/AI-DEV-LIFECYCLE.md`](lifecycle/AI-DEV-LIFECYCLE.md) | Intent → requirements (hard gate) → tasks → subagent-driven execution + context discipline. |
-| **Debugging** | [`lifecycle/DEBUGGING.md`](lifecycle/DEBUGGING.md) | Root-cause-first systematic debugging for when something breaks mid-build. |
-| **Review** | [`release-and-review/CROSS-MODEL-REVIEW.md`](release-and-review/CROSS-MODEL-REVIEW.md) | Adversarial review by different models, with an anti-hallucination gate. |
-| **Release** | [`release-and-review/STAGED-RELEASE.md`](release-and-review/STAGED-RELEASE.md) | A staged, human-authorized path from clean code to production. |
-| **Durable planning** | [`planning/DURABLE-PLANNING.md`](planning/DURABLE-PLANNING.md) | Plan-state headers + anti-drift conventions for multi-session work. |
-| **Templates** | [`templates/`](templates/) | Copy-ready `CLAUDE.md`, `PLAN.md`, and `QA_CASES.md` starters. |
-| **Setup** | [`SETUP.md`](SETUP.md) | How a team or solo dev adopts this in their own project (point your agent at it). |
+| [`/brainstorm`](skills/brainstorm/SKILL.md) | skill | Hard design gate — no code until a design is approved; drives requirements as a senior PM. |
+| [`/plan`](skills/plan/SKILL.md) | skill | Durable planning — writes a plan file with a PLAN-STATE header so decisions survive across sessions. |
+| [`/principal-consultant`](skills/principal-consultant/SKILL.md) | skill | Communication + advisory protocol; the Launch-Email value gate, the prose analog of `/brainstorm`'s design gate. |
+| [`engineering-principles`](workflows/engineering-principles.md) | workflow | The decision framework — consult before any task. |
+| [`/release-check`](skills/release-check/SKILL.md) | skill | Fast local pre-PR sanity gate (build/lint/type/tests + secrets + git hygiene), under a minute. |
+| [`/peer-review`](skills/peer-review/SKILL.md) | skill | Autonomous hardening — adversarial cross-model review, drives to convergence, opens a bot-clean PR. |
+| [`/debug`](skills/debug/SKILL.md) | skill | Root-cause-first systematic debugging; also the remediate path for `/peer-review` findings. |
+| [`/release-prep`](workflows/release-prep.md) | workflow | Pre-release pipeline — hardens, simplifies, clears the PR-review bot, verifies the build, waits for approval. Does **not** merge. |
+| [`/release-prod`](workflows/release-prod.md) | workflow | Production release — runs after the staging gate; this is where the merge and distribution happen. |
+| [`/checkpoint`](workflows/checkpoint.md) | workflow | Mid-session save — aligns docs with the session's work and writes a cross-conversation handoff. |
+
+### The pipeline
+
+The commands compose into one delivery flow:
+
+```
+/brainstorm  →  /plan  →  build  →  /peer-review  →  /release-prep  →  /release-prod
+ (design gate)  (durable    (agent    (cross-model      (staging gate,    (merge +
+                 plan)       builds)    hardening →       human-approved)   distribute)
+                                        bot-clean PR)
+```
+
+Cross-cutting, available at any phase:
+
+- **`/checkpoint`** — save state and a handoff whenever a session is about to end or context is filling up.
+- **`/debug`** — drop in whenever something breaks mid-build; it's also where `/peer-review` findings get remediated.
+
+`engineering-principles` and `/principal-consultant` are standing instructions — consulted *throughout*, not at a single step.
+
+### Canonical homes (the *why* lives with each command)
+
+| Topic | Path |
+|---|---|
+| Lifecycle overview | [`concepts/ai-dev-lifecycle.md`](concepts/ai-dev-lifecycle.md) |
+| Principles | [`workflows/engineering-principles.md`](workflows/engineering-principles.md) |
+| Cross-model review | [`skills/peer-review/SKILL.md`](skills/peer-review/SKILL.md) |
+| Staged release | [`workflows/release-prep.md`](workflows/release-prep.md) → [`workflows/release-prod.md`](workflows/release-prod.md) |
+| Durable planning | [`skills/plan/SKILL.md`](skills/plan/SKILL.md) |
+| Systematic debugging | [`skills/debug/SKILL.md`](skills/debug/SKILL.md) |
 
 ## How to use it
 
