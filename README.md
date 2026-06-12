@@ -4,7 +4,7 @@
 
 > Principles, a development lifecycle, review + release discipline, and durable planning — the methodology I actually use, generalized for any team or solo builder.
 >
-> Based on pricipals gleaned from others' best practices (See [CREDITS.md](CREDITS.md)).
+> Based on principles gleaned from others' best practices (See [CREDITS.md](CREDITS.md)).
 >
 > **New here? → [SETUP.md](SETUP.md).**
 
@@ -69,7 +69,7 @@ Cross-cutting, available at any phase:
 
 ## How to use it
 
-You can just point you AI at this repo and ask it to incorporate the principals into your own workflows, or you can take the whole thing and drop it in verbatim. If you choose the later (designed for Claude):
+You can just point your AI at this repo and ask it to incorporate the principles into your own workflows, or you can take the whole thing and drop it in verbatim. If you choose the latter (designed for Claude):
 1. Drop the `CLAUDE.md` template into your repo and fill in your stack and constraints.
 2. Adopt the principles as your agent's standing instructions.
 3. Wire the release gate **before** you let agents touch anything shippable.
