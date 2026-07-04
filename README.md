@@ -76,10 +76,12 @@ standard (read natively by Claude Code, Codex, and others). Maintaining a separa
 hand-edited copy per tool is how **instruction drift** starts: the copies fall out
 of sync and agents follow stale rules.
 
-The fix is one source of truth. Make [`templates/AGENTS.md`](templates/AGENTS.md)
-the canonical file and make each tool's filename a **symlink** to it:
+The fix is one source of truth. Copy [`templates/AGENTS.md`](templates/AGENTS.md)
+into your repository root as `AGENTS.md`, fill in the placeholders, then make each
+tool's filename a **symlink** to it (run from the repo root):
 
 ```sh
+cp path/to/knappstack/templates/AGENTS.md AGENTS.md   # then fill it in
 ln -s AGENTS.md CLAUDE.md
 ln -s AGENTS.md GEMINI.md
 ```

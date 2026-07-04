@@ -28,7 +28,7 @@ to exactly ONE home:
 
 | Kind of learning | Its one home |
 |---|---|
-| Recurring code / review pattern | `docs/.ca-patterns.md` |
+| Recurring code / review pattern | your **known-patterns file** (e.g. `docs/review-patterns.md`) — the same one `release-prep` Phase 9 audits |
 | Process rule / banned action | the relevant command or workflow doc |
 | Durable fact / runbook | your project's knowledge / reference directory |
 | A failing test for a specific bug | `docs/QA_CASES.md` |

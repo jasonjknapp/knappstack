@@ -27,7 +27,7 @@
 
 ## Hard rules
 
-> The non-negotiables. Keep them few and write them around *intent*, not brittle literals (see Principles §14).
+> The non-negotiables. Keep them few and write them around *intent*, not brittle literals — rules anchored to specifics decay as the code moves; rules anchored to intent survive refactors.
 
 - **Brand / naming:** `<exact capitalization and spelling — the thing to never get wrong>`.
 - **Production safety:** never deploy or mutate production without explicit approval. Present the plan, dry-run first.
