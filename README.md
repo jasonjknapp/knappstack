@@ -66,6 +66,34 @@ Cross-cutting, available at any phase:
 | Staged release | [`workflows/release-prep.md`](workflows/release-prep.md) → [`workflows/release-prod.md`](workflows/release-prod.md) |
 | Durable planning | [`skills/plan/SKILL.md`](skills/plan/SKILL.md) |
 | Systematic debugging | [`skills/debug/SKILL.md`](skills/debug/SKILL.md) |
+| Self-improving QA loop | [`concepts/self-improving-qa-loop.md`](concepts/self-improving-qa-loop.md) |
+
+## One canonical instruction file
+
+Every agent CLI looks for its own instruction filename — Claude Code reads
+`CLAUDE.md`, Gemini reads `GEMINI.md`, and `AGENTS.md` is the emerging cross-tool
+standard (read natively by Claude Code, Codex, and others). Maintaining a separate
+hand-edited copy per tool is how **instruction drift** starts: the copies fall out
+of sync and agents follow stale rules.
+
+The fix is one source of truth. Copy [`templates/AGENTS.md`](templates/AGENTS.md)
+into your repository root as `AGENTS.md`, fill in the placeholders, then make each
+tool's filename a **symlink** to it (run from the repo root):
+
+```sh
+cp path/to/knappstack/templates/AGENTS.md AGENTS.md   # then fill it in
+ln -s AGENTS.md CLAUDE.md
+ln -s AGENTS.md GEMINI.md
+```
+
+Now there is exactly one file to edit, and every harness reads the same rules. If
+a tool ever needs a genuine delta, convert its symlink into a thin stub that
+imports the canonical file — never a fork.
+
+**Drift check (optional but recommended):** a tiny CI/pre-commit script can assert
+that each instruction surface is still a symlink (or hash-match) to the canonical
+`AGENTS.md`, and fail loudly if someone replaces one with a divergent copy. A
+broken link becomes a build error instead of silent drift.
 
 ## How to use it
 
