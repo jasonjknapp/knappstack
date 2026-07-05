@@ -67,6 +67,7 @@ Cross-cutting, available at any phase:
 | Durable planning | [`skills/plan/SKILL.md`](skills/plan/SKILL.md) |
 | Systematic debugging | [`skills/debug/SKILL.md`](skills/debug/SKILL.md) |
 | Self-improving QA loop | [`concepts/self-improving-qa-loop.md`](concepts/self-improving-qa-loop.md) |
+| Local-first orchestration (cheap/local volume, frontier verify) | [`concepts/local-first-orchestration.md`](concepts/local-first-orchestration.md) |
 
 ## One canonical instruction file
 
