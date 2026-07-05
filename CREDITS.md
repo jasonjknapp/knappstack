@@ -15,6 +15,16 @@ This playbook is **predominantly original work** — developed with AI assistanc
 - The **context-engineering** body of work — writing / selecting / compressing / isolating context.
 - **"12-factor agents"** and **spec-driven development** as a broader school — boring primitives over clever orchestration.
 
+### Shaping [Local-First Orchestration](concepts/local-first-orchestration.md)
+
+That essay composes ideas from several open-source local-LLM orchestration tools rather than adopting any one; each contributed a specific idiom:
+
+- **[llama-swap](https://github.com/mostlygeek/llama-swap)** — the hot-swap proxy pattern (TTLs, co-residency groups) behind the single-broker model.
+- **[LiteLLM](https://github.com/BerriAI/litellm) / Portkey** — gateway idioms: per-key budgets, retry/fallback config shape, response caching.
+- **[RouteLLM](https://github.com/lm-sys/routellm)** — the eval methodology and threshold-calibration approach for tuning a routing table (and the learned-routing upgrade path).
+- **Semantic Router** — deterministic, pre-LLM routing as a philosophy; the static task table is that idea.
+- **[Ollama](https://github.com/ollama/ollama)** — the local-serving substrate the roles run on.
+
 ## Honest note on lineage
 
 Generalized from a larger private workflow set that also draws on frameworks **not used in this playbook** — Sahil Lavingia's minimalist lens, Barbara Minto's SCQA and the U.S. Army's BLUF for executive writing, `blader/humanizer` for communication. Named for completeness; none are embedded in the practices here.
