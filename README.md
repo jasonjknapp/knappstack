@@ -109,3 +109,9 @@ It's harness-agnostic in spirit (the principles hold for any capable coding agen
 
 This is distilled from hands-on delivery but draws on others' best practices as well [CREDITS.md](CREDITS.md).
 — Jason Knapp
+
+## See the method in a small example
+
+[An illustrative requirement-to-release walkthrough](examples/bounded-export.md) shows the delivery loop with synthetic data: define the requirement, implement it, let an independent reviewer find a gap, fix and recheck it, then record evidence for the release decision. It is fictional and makes no claim about a shipped client project.
+
+For the fuller operating context, see the [Knappstack operating manual](https://jknapp.com/articles/knappstack-operating-manual). For a concrete product using these delivery practices, see [Cheapskate](https://github.com/jasonjknapp/cheapskate) and its [local-model routing article](https://jknapp.com/articles/cheapskate-local-llm-routing).
