@@ -63,6 +63,6 @@
 - **Commit often**, with descriptive messages. A pushed commit is the only proof a step is done.
 - **Plan state** lives in plan-file headers; update them atomically with the work (see Durable Planning).
 - **Code standards:** `<language/version, typing, lint/format commands>`.
-- **Before marking work done:** run lint + typecheck + the relevant tests; run all relevant QA cases.
+- **Before marking work done:** run lint + typecheck + the relevant tests; run all relevant QA cases. Tie results to the exact candidate commit, record what ran and any limits, and repeat affected checks after changes.
 - **End every working session** by updating the state doc + any plan headers you touched.
 - **Cite, don't paraphrase** past decisions — link the plan file and quote the line.
